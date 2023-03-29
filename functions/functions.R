@@ -1,35 +1,3 @@
-######### taxaratio(211224追加)######
-# seqtabとtaxonomylist(どっちもmatrix型)を突っ込んだら
-# class~genusまでにまとめて返してくれる
-# stdは抜いておくこと！！！！！！！！！
-################################
-
-######### sum_other(211224追加)######
-# seqtab様のmatrix(genusとかasvとかなんでもよい)
-# (taxaratioのoutputの一部でいい)、と切りあげたい要素の個数を突っ込んだら
-# それ以下のものを"others"にして返す
-#######################################
-
-######### rare_merge(220107追加)######
-# seqtab様のmatrix(genusとかasvとかなんでもよい)
-# いくつでrarefuctionをかけるか、環境条件(実験条件)を引数に
-#######################################
-
-######### palettes(220124, 藤田scriptsからコピー)######
-#######################################
-
-######### remove.outliers(220414追加)######
-# スミルノフ・グラブズ検定(正規分布を仮定)を繰り返し利用した手法
-# listで出力，はじいた数値[[2]]とはじかれなかった数値[[1]]
-# https://www.trifields.jp/how-to-remove-outliers-using-smirnov%E2%80%90grubbs-test-in-r-2114 からコピー
-#######################################
-
-######### forjac(220908追加)##########
-# 普通のmatrixを0/1のmatrixに変換する関数
-# thresholdsを指定出来て、デフォルト値は1
-# dataframeで出力したいならdataframe=Tにする、デフォルトはF
-#######################################
-
 taxaratio <- function(seqtab,taxa){
   f <- function(seqtab,taxa,taxid){
     taxa_n <- cbind(ASV=rownames(taxa),ta=taxa[,(colnames(taxa)==taxid)])
@@ -53,7 +21,6 @@ taxaratio <- function(seqtab,taxa){
   return(list(cla,ord,fam,gen))
 }
 
-# numは上位何種を切り出すか
 sum_other <- function(mat,num){
   a <- colSums(mat)
   b <- sort(a,T)
