@@ -1,1 +1,1 @@
-# alternative-states-by-ecological-drift
+# deterministic and stochastic processes generating alternative states
