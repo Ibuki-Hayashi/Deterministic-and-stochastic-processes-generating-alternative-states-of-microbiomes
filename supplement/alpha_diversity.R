@@ -38,25 +38,31 @@ for(i in 1:length(tax)){
 
 # -- violinplot
 #box_med
-t_box_jit_n <- function(ddd){
-  box <- ggplot(ddd,aes(x=Medium,y=number,starshape=Day,starstroke=0.1))+
-    geom_violin(aes(fill=Medium),lwd=0.1)+scale_fill_manual(values = palettes(unique(ddd$Medium)))+
-    new_scale_fill()+ylab("Number of taxa of community<br>(Species richness)")+
-    geom_star(aes(fill="black",color="black",colour="device"),fill="black",
-              position=position_jitterdodge(jitter.width=0.1,dodge.width=0.85),size=0.8)+
-    theme_light()+theme(text=element_text(size=7),axis.title.y=element_markdown(),
-                        legend.position="none")
+t_box_jit_n <- function(ddd, title){
+  box <- ggplot(ddd,aes(x=Day,y=number))+
+    geom_violin(aes(fill=Medium),lwd=0.1)+
+    geom_line(aes(x=Day, y=number, group=1), stat="summary", fun="median")+
+    facet_wrap(.~Medium, ncol=4)+
+    scale_fill_manual(values = palettes(unique(ddd$Medium)))+
+    stat_summary(fun="median", geom="point", aes(group=Day),
+                 shape=23, size=1.5, fill="white")+
+    ylab(sprintf("Number of %s", title))+
+    theme_light()+theme(text=element_text(size=7),axis.title.y=element_markdown())+
+    theme(legend.position="none")
   return(box)
 }
 
 t_box_jit_a <- function(ddd){
-  box <- ggplot(ddd,aes(x=Medium,y=alpha,starshape=Day,starstroke=0.1))+
-    geom_violin(aes(fill=Medium),lwd=0.1)+scale_fill_manual(values = palettes(unique(ddd$Medium)))+
-    new_scale_fill()+ylab("<i>&alpha;</i> diversity of community<br>(Shannon's <i>H'</i>)")+
-    geom_star(aes(fill="black",color="black",colour="device"),fill="black",
-              position=position_jitterdodge(jitter.width=0.1,dodge.width=0.85),size=0.8)+
-    theme_light()+theme(text=element_text(size=7),axis.title.y=element_markdown(),
-                        legend.position="none")
+  box <- ggplot(ddd,aes(x=Day,y=alpha))+
+    geom_violin(aes(fill=Medium),lwd=0.1)+
+    geom_line(aes(x=Day, y=alpha, group=1), stat="summary", fun="median")+
+    facet_wrap(.~Medium, ncol=4)+
+    scale_fill_manual(values = palettes(unique(ddd$Medium)))+
+    stat_summary(fun="median", geom="point", aes(group=Day),
+                 shape=23, size=1.5, fill="white")+
+    ylab("<i>&alpha;</i> diversity of community<br>(Shannon's <i>H'</i>)")+
+    theme_light()+theme(text=element_text(size=7),axis.title.y=element_markdown())+
+    theme(legend.position="none")
   return(box)
 }
 
@@ -71,9 +77,10 @@ legg <- function(ddd){
 }
 
 npl <- list(); apl <- list(); lpl <- list()
+a <- c("families", "genera", "taxa of ASVs")
 for(i in 3:length(tax)){
   apl[[i]] <- t_box_jit_a(ddd=t_list[[i]])
-  npl[[i]] <- t_box_jit_n(ddd=t_list[[i]])
+  npl[[i]] <- t_box_jit_n(ddd=t_list[[i]], title=a[i-2])
   lpl[[i]] <- legg(ddd=t_list[[i]])
 }
 
