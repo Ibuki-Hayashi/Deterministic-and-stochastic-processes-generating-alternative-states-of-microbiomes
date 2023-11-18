@@ -70,3 +70,4 @@ conda activate picrust2 #- Please install conda & picrust if you need
 picrust2_pipeline.py -v > $outputName/log.txt
 picrust2_pipeline.py -s $fasta -i $abundance -o $outputName/result -p 32 >> $outputName/log.txt
 
+add_descriptions.py -i $outputname/result/path_abun_unstrat.tsv.gz -m METACYC -o $outputname/result/path_abun_unstrat_descrip.tsv.gz
